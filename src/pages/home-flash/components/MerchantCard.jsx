@@ -145,15 +145,15 @@ function ProductCard({ type, id, isPartial }) {
         <div className="flex items-baseline gap-1">
           <span className="text-[#FF0400] text-[14px] font-semibold leading-none"><span className="text-[10px]">¥</span>{currentPrice}</span>
         </div>
-        <div className="flex items-center justify-between">
+        <div>
           <span className="text-[#C2C4CC] text-[10px] line-through leading-none">¥{oldPrice}</span>
-          {!isPartial && (
-            <div className="w-[20px] h-[20px] bg-[#FFEBEF] rounded-full flex items-center justify-center relative -mb-1">
-              <div className="w-[10px] h-[1.4px] bg-[#FF0400] rounded-[1px]"></div>
-              <div className="w-[1.4px] h-[10px] bg-[#FF0400] rounded-[1px] absolute"></div>
-            </div>
-          )}
         </div>
+        {!isPartial && (
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[20px] h-[20px] bg-[#FFEBEF] rounded-full flex items-center justify-center">
+            <div className="w-[10px] h-[1.4px] bg-[#FF0400] rounded-[1px]"></div>
+            <div className="w-[1.4px] h-[10px] bg-[#FF0400] rounded-[1px] absolute"></div>
+          </div>
+        )}
       </div>
     </div>
   );
