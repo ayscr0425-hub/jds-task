@@ -1,5 +1,4 @@
 import React from 'react';
-import { navigateTo } from '@/utils/navigation';
 import CommonTopNav from '@/components/CommonTopNav';
 
 function TopArea() {

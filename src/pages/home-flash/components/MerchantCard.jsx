@@ -4,11 +4,11 @@ function MerchantCard({ type, shopName, logo }) {
   const isShop1 = type === "1";
 
   return (
-    <div className="w-[359px] h-[246px] bg-[#FFFFFF] rounded-[12px] p-[12px] flex flex-col shadow-[0_2px_8px_rgba(0,0,0,0.04)]" data-ai-alt="店铺卡片">
+    <div className="w-[359px] bg-[#FFFFFF] rounded-[12px] p-[12px] flex flex-col shadow-[0_2px_8px_rgba(0,0,0,0.04)]" data-ai-alt="店铺卡片">
       {/* Header Section */}
       <div className="flex gap-[8px] h-[72px] mb-[8px]" data-ai-alt="头部信息区">
         <img src={logo} className="w-[72px] h-[72px] rounded-[6px] object-cover border border-gray-100 flex-shrink-0" data-ai-alt="店铺Logo" />
-        <div className="flex-1 flex flex-col justify-between overflow-hidden">
+        <div className="flex-1 flex flex-col gap-[4px] overflow-hidden">
           <div className="flex items-center gap-[4px] w-full">
             <div className="flex items-center gap-[4px] flex-1 w-0 overflow-hidden">
               <div className="h-[14px] flex items-center rounded-[2px] overflow-hidden flex-shrink-0" data-ai-alt="品牌标签">
@@ -130,7 +130,7 @@ function ProductCard({ type, id, isPartial }) {
   const oldPrice = isShop1 ? oldPrices1[idx] : oldPrices2[idx];
 
   return (
-    <div className={`w-[72px] flex flex-col ${isPartial ? 'overflow-hidden' : ''}`} data-ai-alt="商品子卡">
+    <div className={`w-[72px] flex flex-col shrink-0 ${isPartial ? 'overflow-hidden' : ''}`} data-ai-alt="商品子卡">
       <div className="w-[72px] h-[72px] rounded-[6px] overflow-hidden relative border border-gray-50 flex-shrink-0">
         <img src={img} className="w-full h-full object-cover" />
         {!isPartial && id === "1" && isShop1 && (
@@ -141,16 +141,16 @@ function ProductCard({ type, id, isPartial }) {
         )}
       </div>
       <span className="text-[11px] text-[#1A1A1A] mt-[6px] truncate flex-shrink-0">{name}</span>
-      <div className="flex flex-col mt-auto w-full relative flex-shrink-0 pt-1">
+      <div className="flex flex-col w-full relative pt-1">
         <div className="flex items-baseline gap-1">
           <span className="text-[#FF0400] text-[14px] font-semibold leading-none"><span className="text-[10px]">¥</span>{currentPrice}</span>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-[#C2C4CC] text-[10px] line-through leading-none">¥{oldPrice}</span>
           {!isPartial && (
-            <div className="w-[20px] h-[20px] bg-[#FFEBEF] rounded-full flex items-center justify-center -mb-1">
-              <div className="w-[10px] h-[1.4px] bg-[#FF0400] absolute rounded-[1px]"></div>
-              <div className="w-[1.4px] h-[10px] bg-[#FF0400] absolute rounded-[1px]"></div>
+            <div className="w-[20px] h-[20px] bg-[#FFEBEF] rounded-full flex items-center justify-center relative -mb-1">
+              <div className="w-[10px] h-[1.4px] bg-[#FF0400] rounded-[1px]"></div>
+              <div className="w-[1.4px] h-[10px] bg-[#FF0400] rounded-[1px] absolute"></div>
             </div>
           )}
         </div>
