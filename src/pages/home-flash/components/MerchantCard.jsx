@@ -17,7 +17,7 @@ function MerchantCard({ type, shopName, logo }) {
               </div>
               <span className="text-[16px] font-semibold text-[#1A1A1A] leading-tight truncate max-w-full" data-ai-alt="店铺名称">{shopName}</span>
             </div>
-            <div className="bg-[#FFFFFF] border border-[#A9560132] rounded-[2px] px-1 text-[10px] text-[#A95601] whitespace-nowrap ml-auto flex-shrink-0">
+            <div className="bg-[#FFFFFF] border border-[#A95601] border-opacity-20 rounded-[2px] px-1 text-[10px] text-[#A95601] whitespace-nowrap ml-auto flex-shrink-0">
               京东秒送
             </div>
           </div>
@@ -81,7 +81,7 @@ function MerchantCard({ type, shopName, logo }) {
             <span className="text-[24px] font-bold leading-none">15</span>
           </div>
           <span className="text-[10px] text-[#B35900] opacity-80 mt-[2px]">满16可用</span>
-          <div className="w-[54px] h-[24px] rounded-[4px] flex items-center justify-center text-[10px] text-[#854A05] font-semibold absolute bottom-[8px] shadow-sm">
+          <div className="w-[54px] h-[24px] bg-white rounded-[4px] flex items-center justify-center text-[10px] text-[#854A05] font-semibold absolute bottom-[8px] shadow-sm">
             去使用
           </div>
         </div>
@@ -131,7 +131,7 @@ function ProductCard({ type, id, isPartial }) {
 
   return (
     <div className={`w-[72px] flex flex-col shrink-0 ${isPartial ? 'overflow-hidden' : ''}`} data-ai-alt="商品子卡">
-      <div className="w-[72px] h-[72px] rounded-[6px] overflow-hidden relative border border-gray-50 flex-shrink-0">
+      <div className="w-[72px] h-[72px] rounded-[6px] overflow-hidden relative border border-gray-200 flex-shrink-0">
         <img src={img} className="w-full h-full object-cover" />
         {!isPartial && id === "1" && isShop1 && (
           <div className="absolute left-0 bottom-0 bg-[#A00000] text-white text-[8px] px-[2px] rounded-tr-[4px]">下单必点 不纠结</div>
