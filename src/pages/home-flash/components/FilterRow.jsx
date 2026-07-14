@@ -2,24 +2,23 @@ import React from 'react';
 
 function FilterRow() {
   return (
-    <div className="w-full h-[36px] bg-[#F2F3F5] mt-[4px] flex items-center gap-[6px] overflow-hidden relative px-[8px]" data-ai-alt="筛选行">
-      <div className="h-[30px] px-[12px] bg-[#E8E9ED] rounded-[6px] flex items-center gap-[4px] flex-shrink-0" data-ai-alt="综合排序">
-        <span className="text-[11px] font-medium text-black">综合排序</span>
-        <i className="fa fa-angle-down text-black text-[10px]"></i>
+    <div className="w-full h-[44px] bg-white flex items-center gap-[8px] overflow-hidden relative px-[12px] border-b border-[#F0F0F0]" data-ai-alt="筛选行">
+      <div className="h-[32px] px-[12px] bg-white border border-[#E5E5E5] rounded-[16px] flex items-center gap-[4px] flex-shrink-0" data-ai-alt="综合排序">
+        <span className="text-[13px] font-medium text-[#1A1A1A]">综合排序</span>
+        <i className="fa fa-angle-down text-[#1A1A1A] text-[10px]"></i>
       </div>
-      <div className="h-[30px] px-[12px] bg-[#E8E9ED] rounded-[6px] flex items-center flex-shrink-0" data-ai-alt="自提更省">
-        <span className="text-[11px] font-medium text-black">到店自提</span>
+      <div className="h-[32px] px-[12px] bg-white border border-[#E5E5E5] rounded-[16px] flex items-center flex-shrink-0" data-ai-alt="百亿补贴">
+        <span className="text-[13px] font-medium text-[#1A1A1A]">百亿补贴</span>
       </div>
-      <div className="h-[30px] px-[12px] bg-[#E8E9ED] rounded-[6px] flex items-center gap-[4px] flex-shrink-0" data-ai-alt="品牌饭卡">
-        <i className="fa fa-fire text-[#FF4D00] text-[10px]"></i>
-        <span className="text-[11px] font-medium text-black">1元爆品</span>
+      <div className="h-[32px] px-[12px] bg-white border border-[#E5E5E5] rounded-[16px] flex items-center flex-shrink-0" data-ai-alt="热菜现炒">
+        <span className="text-[13px] font-medium text-[#1A1A1A]">热菜现炒</span>
       </div>
-      <div className="h-[30px] px-[12px] bg-[#E8E9ED] rounded-[6px] flex items-center flex-shrink-0" data-ai-alt="百亿补贴">
-        <span className="text-[11px] font-medium text-black whitespace-nowrap">超级月卡折上折</span>
+      <div className="h-[32px] px-[12px] bg-white border border-[#E5E5E5] rounded-[16px] flex items-center flex-shrink-0" data-ai-alt="品牌商家">
+        <span className="text-[13px] font-medium text-[#1A1A1A]">品牌商家</span>
       </div>
       {/* Right Fixed Filter Entry */}
-      <div className="absolute right-[8px] h-[36px] w-[30px] bg-[#F2F3F5] flex items-center justify-center z-10" data-ai-alt="末尾筛选">
-        <i className="fa fa-filter text-[#d1d6db] text-[10px]"></i>
+      <div className="absolute right-[12px] h-[44px] w-[40px] bg-gradient-to-r from-transparent via-white to-white flex items-center justify-center z-10" data-ai-alt="末尾筛选">
+        <i className="fa fa-bars text-[#1A1A1A] text-[16px]"></i>
       </div>
     </div>
   );
