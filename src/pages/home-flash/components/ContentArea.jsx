@@ -6,7 +6,7 @@ import AiGuessFoodCard from '@/components/AiGuessFoodCard';
 
 function ContentArea() {
   return (
-    <div className="flex-1 overflow-y-auto pb-[90px] bg-[#F5F5F5]" data-ai-alt="滚动内容区">
+    <div className="flex-1 overflow-y-auto pb-[20px] bg-[#F5F5F5]" data-ai-alt="滚动内容区">
        {/* Category Icons - brown background from CategoryRow */}
        <CategoryRow />
 
