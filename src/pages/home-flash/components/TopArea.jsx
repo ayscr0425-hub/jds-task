@@ -36,7 +36,7 @@ function TopArea() {
 
       {/* Search Bar */}
       <div className="w-full h-[48px] px-[12px] py-[4px] relative z-10 bg-transparent" data-ai-alt="搜索栏容器">
-        <div className="w-full h-[36px] bg-white rounded-[18px] flex items-center px-[16px] gap-[8px] relative shadow-sm">
+        <div className="w-full h-[36px] bg-white rounded-[8px] flex items-center px-[16px] gap-[8px] relative shadow-sm">
           <i className="fa fa-search text-[#999999] text-[14px]"></i>
           <span className="text-[13px] text-[#999999] flex-1">搜索热搜词</span>
           <span className="text-[15px] text-[#1A1A1A] font-medium">搜索</span>
