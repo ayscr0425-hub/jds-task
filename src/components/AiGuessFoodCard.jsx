@@ -44,7 +44,7 @@ function AiGuessFoodCard({ onOpenChat }) {
   };
 
   return (
-    <div className="w-[359px] bg-white rounded-[12px] p-[12px] mx-[8px] my-[8px] shadow-sm border border-[#EEEEEE]" data-ai-alt="AI猜你喜欢卡片">
+    <div className="w-[359px] bg-white rounded-[12px] p-[12px] mx-[8px] my-[2px] shadow-sm border border-[#EEEEEE]" data-ai-alt="AI猜你喜欢卡片">
       {/* Header */}
       <div className="flex justify-between items-center mb-[10px]" data-ai-alt="卡片头部">
         <div className="flex items-center gap-[6px]">

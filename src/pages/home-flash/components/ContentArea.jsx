@@ -17,7 +17,7 @@ function ContentArea() {
        <FilterRow />
 
        {/* Merchant List */}
-       <div className="w-[375px] px-[8px] flex flex-col gap-[8px] mt-[8px] pb-[20px]" data-ai-alt="店铺列表">
+       <div className="w-[375px] px-[8px] flex flex-col gap-[8px] mt-[4px] pb-[20px]" data-ai-alt="店铺列表">
           <MerchantCard 
              type="1" 
              shopName="七鲜小厨（长保大厦店）"
