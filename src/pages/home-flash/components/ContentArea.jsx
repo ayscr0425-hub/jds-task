@@ -9,6 +9,7 @@ function ContentArea() {
   const [topHeight, setTopHeight] = useState(0);
   const [showFloatingCard, setShowFloatingCard] = useState(false);
   const [showAiChat, setShowAiChat] = useState(false);
+  const [aiChatKey, setAiChatKey] = useState(0);
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ function ContentArea() {
         <div style={{ height: topHeight }} />
 
         {/* AI猜你喜欢吃 module */}
-        <AiGuessFoodCard />
+        <AiGuessFoodCard onCard3Click={() => { setAiChatKey(prev => prev + 1); setShowAiChat(true); }} />
 
         {/* Filter + Merchant list static image */}
         <div className="px-[8px]">
@@ -61,11 +62,12 @@ function ContentArea() {
       {/* 下滑浮层卡片 */}
       <ScrollFloatingCard
         visible={showFloatingCard}
-        onAiClick={() => setShowAiChat(true)}
+        onAiClick={() => { setAiChatKey(prev => prev + 1); setShowAiChat(true); }}
       />
 
       {/* AI吃啥弹出页 */}
       <AiEatWhatPage
+        key={aiChatKey}
         visible={showAiChat}
         onClose={() => setShowAiChat(false)}
       />
