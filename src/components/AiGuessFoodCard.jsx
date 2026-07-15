@@ -20,6 +20,11 @@ function AiGuessFoodCard() {
     }, 500);
   };
 
+  const handleOrder = () => {
+    // 待后续补充：跳转到购物车页面
+    alert('跳转至购物车页面（待实现）');
+  };
+
   return (
     <div
       className={`p-[8px] relative ${isLastCard ? '' : 'cursor-pointer'}`}
@@ -31,6 +36,13 @@ function AiGuessFoodCard() {
         <div className="absolute inset-0 flex items-center justify-center">
           <img src={loadingGif} alt="加载中" className="opacity-60" />
         </div>
+      )}
+      {/* 去下单按钮热区 */}
+      {!loading && (
+        <div
+          className="absolute right-[9px] bottom-[11px] w-[64px] h-[28px] cursor-pointer"
+          onClick={(e) => { e.stopPropagation(); handleOrder(); }}
+        />
       )}
     </div>
   );
