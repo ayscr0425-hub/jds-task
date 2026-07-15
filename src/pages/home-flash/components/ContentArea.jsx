@@ -3,7 +3,7 @@ import topImage from '@/assets/images/top.png';
 import listImage from '@/assets/images/list.png';
 import AiGuessFoodCard from '@/components/AiGuessFoodCard';
 import ScrollFloatingCard from '@/components/ScrollFloatingCard';
-import AiChatModal from '@/components/AiChatModal';
+import AiEatWhatPage from '@/pages/ai-eat/AiEatWhatPage';
 
 function ContentArea() {
   const [topHeight, setTopHeight] = useState(0);
@@ -64,8 +64,8 @@ function ContentArea() {
         onAiClick={() => setShowAiChat(true)}
       />
 
-      {/* AI对话弹窗 */}
-      <AiChatModal
+      {/* AI吃啥弹出页 */}
+      <AiEatWhatPage
         visible={showAiChat}
         onClose={() => setShowAiChat(false)}
       />
