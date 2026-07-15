@@ -133,10 +133,10 @@ function AiEatWhatPage({ visible, onClose }) {
         </div>
 
         {/* ② 对话文字：逐段逐字动态加载 */}
-        <div className="px-[0px]">
+        <div className="px-[0px] flex flex-col gap-[0px]">
           {dialogs.map((d, i) => (
+            <div key={i} className={i === 0 ? 'mt-[12px] mb-[6px]' : i === 1 ? 'mb-[12px]' : ''}>
             <TypewriterImage
-              key={i}
               src={d.src}
               height={d.h}
               instant={d.instant}
@@ -149,6 +149,7 @@ function AiEatWhatPage({ visible, onClose }) {
                 }
               }}
             />
+            </div>
           ))}
         </div>
 
