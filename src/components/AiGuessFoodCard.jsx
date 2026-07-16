@@ -34,18 +34,17 @@ function AiGuessFoodCard({ onCard3Click, onOrderClick }) {
       onClick={handleClick}
       data-ai-alt="AI猜你喜欢卡片"
     >
-      <img src={cardImages[cardIndex]} alt="AI猜你喜欢吃" className={loading ? 'opacity-0' : ''} />
-      {loading && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <img src={loadingGif} alt="加载中" className="opacity-60" />
-        </div>
-      )}
-      {/* 去下单按钮热区 */}
-      {!loading && (
-        <div
-          className="absolute right-[9px] bottom-[11px] w-[64px] h-[28px] cursor-pointer"
-          onClick={(e) => { e.stopPropagation(); handleOrder(); }}
-        />
+      {loading ? (
+        <img src={loadingGif} alt="加载中" className="opacity-60" style={{ width: 359, height: 160, display: 'block' }} />
+      ) : (
+        <>
+          <img src={cardImages[cardIndex]} alt="AI猜你喜欢吃" style={{ display: 'block' }} />
+          {/* 去下单按钮热区 */}
+          <div
+            className="absolute right-[9px] bottom-[11px] w-[64px] h-[28px] cursor-pointer"
+            onClick={(e) => { e.stopPropagation(); handleOrder(); }}
+          />
+        </>
       )}
     </div>
   );
