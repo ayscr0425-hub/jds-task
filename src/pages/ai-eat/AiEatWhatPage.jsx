@@ -7,6 +7,8 @@ import bottomDialog from '@/assets/images/底部对话.png';
 import bottomDialog1 from '@/assets/images/底部对话1.png';
 import typingDialog from '@/assets/images/打字-对话.png';
 import typingCard from '@/assets/images/打字-卡片.png';
+import lemonDialog from '@/assets/images/柠檬水-对话.png';
+import lemonCard from '@/assets/images/柠檬水-卡片.png';
 import CartPage from './CartPage';
 import CheckoutPage from './CheckoutPage';
 
@@ -25,6 +27,12 @@ const variantDialogs = [
   { src: typingDialog, h: (813 / 1125) * VIEW_W },
   { src: typingCard, h: (648 / 1125) * VIEW_W, instant: true },
   { src: dialog3, h: (429 / 1125) * VIEW_W },
+];
+
+// 点击对话3后：柠檬水-对话 → 柠檬水-卡片（仅2张）
+const lemonDialogs = [
+  { src: lemonDialog, h: (813 / 1125) * VIEW_W },
+  { src: lemonCard, h: (648 / 1125) * VIEW_W, instant: true },
 ];
 
 function TypewriterImage({ src, height, active, onDone, instant = false }) {
@@ -160,6 +168,12 @@ function AiEatWhatPage({ visible, onClose }) {
     }
   };
 
+  // 点击对话3（每轮最后一张且含对话3的轮次）→ 追加 lemon 轮
+  const handleDialog3Click = () => {
+    isNearBottomRef.current = true;
+    setRounds(prev => [...prev, { id: nextIdRef.current++, step: 0, type: 'lemon' }]);
+  };
+
   if (!visible) return null;
 
   if (route === 'cart') return <CartPage onBack={() => setRoute(null)} />;
@@ -185,11 +199,17 @@ function AiEatWhatPage({ visible, onClose }) {
         {/* 中间可滚动对话区 - 支持上滑查看历史 */}
         <div ref={scrollRef} className="flex-1 overflow-y-auto scrollbar-hide" onScroll={handleScroll}>
           {rounds.map((round) => {
-            const roundDialogs = round.type === 'variant' ? variantDialogs : defaultDialogs;
+            const roundDialogs = round.type === 'variant' ? variantDialogs : round.type === 'lemon' ? lemonDialogs : defaultDialogs;
+            const isLastDialog = (i) => i === roundDialogs.length - 1;
+            const isDialog3Round = round.type === 'default' || round.type === 'variant'; // 含对话3的轮次
             return (
               <div key={round.id} className="flex flex-col">
                 {roundDialogs.map((d, i) => (
-                  <div key={`${round.id}-${i}`} className={i === 0 ? 'mt-[12px] mb-[6px]' : i === 1 ? 'mb-[12px]' : ''}>
+                  <div
+                    key={`${round.id}-${i}`}
+                    className={`${i === 0 ? 'mt-[12px] mb-[6px]' : i === 1 ? 'mb-[12px]' : ''} ${isLastDialog(i) && isDialog3Round ? 'cursor-pointer' : ''}`}
+                    onClick={isLastDialog(i) && isDialog3Round ? handleDialog3Click : undefined}
+                  >
                     <TypewriterImage
                       src={d.src}
                       height={d.h}
