@@ -162,15 +162,16 @@ function AiEatWhatPage({ visible, onClose, initialView = 'dialog' }) {
     }
   };
 
-  // 点击底部 → 分两步：先切换底部图片，再追加新一轮
+  // 点击底部 → 分两步：先切换底部图片，再追加新一轮并切回
   const handleBottomClick = () => {
     if (bottomType === 'default') {
-      // 第一次点击：切换底部为 底部对话1.png
+      // 点击底部对话.png → 切换为底部对话1.png（表示正在输入）
       setBottomType('variant');
     } else {
-      // 后续点击：追加新一轮 variant 对话
+      // 点击底部对话1.png → 追加新一轮对话 + 切回底部对话.png（消息已发出）
       isNearBottomRef.current = true;
       setRounds(prev => [...prev, { id: nextIdRef.current++, step: 0, type: 'variant' }]);
+      setBottomType('default');
     }
   };
 
