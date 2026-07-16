@@ -1,18 +1,29 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import topDialog from '@/assets/images/顶部对话.png';
 import dialog1 from '@/assets/images/对话1.png';
-import dialog2 from '@/assets/images/对话2.png';
+import dialog2 from '@/assets/images/对话2_2.png';
 import dialog3 from '@/assets/images/对话3.png';
 import bottomDialog from '@/assets/images/底部对话.png';
+import bottomDialog1 from '@/assets/images/底部对话1.png';
+import typingDialog from '@/assets/images/打字-对话.png';
+import typingCard from '@/assets/images/打字-卡片.png';
 import CartPage from './CartPage';
 import CheckoutPage from './CheckoutPage';
 
 const VIEW_W = 375;
 const AI_RATIO = 1010 / 1076;
 
-const dialogs = [
+// 第一轮对话配置
+const defaultDialogs = [
   { src: dialog1, h: (813 / 1125) * VIEW_W },
   { src: dialog2, h: (648 / 1125) * VIEW_W, instant: true },
+  { src: dialog3, h: (429 / 1125) * VIEW_W },
+];
+
+// 后续轮对话配置：打字-对话 → 打字-卡片 → 对话3
+const variantDialogs = [
+  { src: typingDialog, h: (813 / 1125) * VIEW_W },
+  { src: typingCard, h: (648 / 1125) * VIEW_W, instant: true },
   { src: dialog3, h: (429 / 1125) * VIEW_W },
 ];
 
@@ -88,13 +99,15 @@ function AiEatWhatPage({ visible, onClose }) {
   const [stage, setStage] = useState(0);
   const [route, setRoute] = useState(null);
 
-  // 多轮对话：每轮独立 step（0/1/2 表示当前激活到第几张）
+  // 多轮对话：每轮独立 step + type（'default' 用 defaultDialogs，'variant' 用 variantDialogs）
   const [rounds, setRounds] = useState([]);
   const scrollRef = useRef(null);
   const nextIdRef = useRef(0);
-  const isNearBottomRef = useRef(true); // 用户是否在底部附近
+  const isNearBottomRef = useRef(true);
+  // 底部图片状态：'default' 显示底部对话.png，'variant' 显示底部对话1.png
+  const [bottomType, setBottomType] = useState('default');
 
-  // 监听滚动：用户上滑查看历史时停止自动滚底，滑回底部时恢复
+  // 监听滚动
   const handleScroll = useCallback(() => {
     if (scrollRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
@@ -102,7 +115,7 @@ function AiEatWhatPage({ visible, onClose }) {
     }
   }, []);
 
-  // 持续自动滚底：动画期间内容持续增长，需要持续滚动跟随
+  // 持续自动滚底
   useEffect(() => {
     if (!visible || rounds.length === 0) return;
     const interval = setInterval(() => {
@@ -118,26 +131,33 @@ function AiEatWhatPage({ visible, onClose }) {
     if (!visible) return;
     setStage(0);
     setRoute(null);
+    setBottomType('default');
     nextIdRef.current = 0;
-    setRounds([{ id: nextIdRef.current++, step: 0 }]);
+    setRounds([{ id: nextIdRef.current++, step: 0, type: 'default' }]);
     isNearBottomRef.current = true;
     const t1 = setTimeout(() => setStage(1), 600);
     return () => clearTimeout(t1);
   }, [visible]);
 
   // 某段对话完成 → 激活同轮下一段
-  const handleDialogDone = (roundId, dialogIndex) => {
-    if (dialogIndex < dialogs.length - 1) {
+  const handleDialogDone = (roundId, dialogIndex, dialogCount) => {
+    if (dialogIndex < dialogCount - 1) {
       setRounds(prev => prev.map(r =>
         r.id === roundId ? { ...r, step: Math.max(r.step, dialogIndex + 1) } : r
       ));
     }
   };
 
-  // 点击底部 → 追加新一轮
+  // 点击底部 → 分两步：先切换底部图片，再追加新一轮
   const handleBottomClick = () => {
-    isNearBottomRef.current = true;
-    setRounds(prev => [...prev, { id: nextIdRef.current++, step: 0 }]);
+    if (bottomType === 'default') {
+      // 第一次点击：切换底部为 底部对话1.png
+      setBottomType('variant');
+    } else {
+      // 后续点击：追加新一轮 variant 对话
+      isNearBottomRef.current = true;
+      setRounds(prev => [...prev, { id: nextIdRef.current++, step: 0, type: 'variant' }]);
+    }
   };
 
   if (!visible) return null;
@@ -164,31 +184,34 @@ function AiEatWhatPage({ visible, onClose }) {
 
         {/* 中间可滚动对话区 - 支持上滑查看历史 */}
         <div ref={scrollRef} className="flex-1 overflow-y-auto scrollbar-hide" onScroll={handleScroll}>
-          {rounds.map((round) => (
-            <div key={round.id} className="flex flex-col">
-              {dialogs.map((d, i) => (
-                <div key={`${round.id}-${i}`} className={i === 0 ? 'mt-[12px] mb-[6px]' : i === 1 ? 'mb-[12px]' : ''}>
-                  <TypewriterImage
-                    src={d.src}
-                    height={d.h}
-                    instant={d.instant}
-                    active={stage >= 1 && round.step >= i}
-                    onDone={() => handleDialogDone(round.id, i)}
-                  />
-                </div>
-              ))}
-            </div>
-          ))}
+          {rounds.map((round) => {
+            const roundDialogs = round.type === 'variant' ? variantDialogs : defaultDialogs;
+            return (
+              <div key={round.id} className="flex flex-col">
+                {roundDialogs.map((d, i) => (
+                  <div key={`${round.id}-${i}`} className={i === 0 ? 'mt-[12px] mb-[6px]' : i === 1 ? 'mb-[12px]' : ''}>
+                    <TypewriterImage
+                      src={d.src}
+                      height={d.h}
+                      instant={d.instant}
+                      active={stage >= 1 && round.step >= i}
+                      onDone={() => handleDialogDone(round.id, i, roundDialogs.length)}
+                    />
+                  </div>
+                ))}
+              </div>
+            );
+          })}
         </div>
 
-        {/* 底部图片 - 固定，点击追加新一轮 */}
+        {/* 底部图片 - 固定，点击切换/追加新一轮 */}
         <div
           className="shrink-0 cursor-pointer active:opacity-90"
           data-ai-alt="底部固定区"
           onClick={handleBottomClick}
         >
           <img
-            src={bottomDialog}
+            src={bottomType === 'variant' ? bottomDialog1 : bottomDialog}
             alt="底部对话"
             style={{ width: VIEW_W, display: 'block', opacity: stage >= 0 ? 1 : 0, transition: 'opacity .5s ease' }}
           />
