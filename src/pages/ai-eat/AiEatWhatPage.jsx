@@ -107,7 +107,7 @@ function TypewriterImage({ src, height, active, onDone, instant = false }) {
   );
 }
 
-function AiEatWhatPage({ visible, onClose }) {
+function AiEatWhatPage({ visible, onClose, initialView = 'dialog' }) {
   const [stage, setStage] = useState(0);
   const [route, setRoute] = useState(null);
   // view: 'dialog' | 'addCart1' | 'addCart2' | 'jump1' | 'checkout'
@@ -144,7 +144,7 @@ function AiEatWhatPage({ visible, onClose }) {
     if (!visible) return;
     setStage(0);
     setRoute(null);
-    setView('dialog');
+    setView(initialView);
     setBottomType('default');
     nextIdRef.current = 0;
     setRounds([{ id: nextIdRef.current++, step: 0, type: 'default' }]);
@@ -189,7 +189,7 @@ function AiEatWhatPage({ visible, onClose }) {
   if (view !== 'dialog') {
     return (
       <div className="fixed inset-0 z-[150] flex justify-center bg-black/40" data-ai-alt="AI吃啥弹出页">
-        <div className="absolute inset-0" onClick={() => setView('dialog')} data-ai-alt="背景遮罩" />
+        <div className="absolute inset-0" onClick={onClose} data-ai-alt="背景遮罩" />
         <div
           className="relative z-10 bg-[#F4F5F7] overflow-y-auto scrollbar-hide"
           style={{ width: pageWidth, minHeight: pageMinHeight, maxHeight: '100vh' }}

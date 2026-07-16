@@ -4,7 +4,7 @@ import cardImage2 from '@/assets/images/卡片2.png';
 import cardImage3 from '@/assets/images/卡片3.png';
 import loadingGif from '@/assets/loading.gif';
 
-function AiGuessFoodCard({ onCard3Click }) {
+function AiGuessFoodCard({ onCard3Click, onOrderClick }) {
   const [cardIndex, setCardIndex] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -25,8 +25,7 @@ function AiGuessFoodCard({ onCard3Click }) {
   };
 
   const handleOrder = () => {
-    // 待后续补充：跳转到购物车页面
-    alert('跳转至购物车页面（待实现）');
+    onOrderClick?.();
   };
 
   return (

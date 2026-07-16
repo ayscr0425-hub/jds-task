@@ -10,6 +10,7 @@ function ContentArea() {
   const [showFloatingCard, setShowFloatingCard] = useState(false);
   const [showAiChat, setShowAiChat] = useState(false);
   const [aiChatKey, setAiChatKey] = useState(0);
+  const [aiChatInitialView, setAiChatInitialView] = useState('dialog');
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -51,7 +52,10 @@ function ContentArea() {
         <div style={{ height: topHeight }} />
 
         {/* AI猜你喜欢吃 module */}
-        <AiGuessFoodCard onCard3Click={() => { setAiChatKey(prev => prev + 1); setShowAiChat(true); }} />
+        <AiGuessFoodCard
+          onCard3Click={() => { setAiChatKey(prev => prev + 1); setAiChatInitialView('dialog'); setShowAiChat(true); }}
+          onOrderClick={() => { setAiChatKey(prev => prev + 1); setAiChatInitialView('checkout'); setShowAiChat(true); }}
+        />
 
         {/* Filter + Merchant list static image */}
         <div className="px-[8px]">
@@ -70,6 +74,7 @@ function ContentArea() {
         key={aiChatKey}
         visible={showAiChat}
         onClose={() => setShowAiChat(false)}
+        initialView={aiChatInitialView}
       />
     </>
   );
