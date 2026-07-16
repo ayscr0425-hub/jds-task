@@ -9,6 +9,10 @@ import typingDialog from '@/assets/images/打字-对话.png';
 import typingCard from '@/assets/images/打字-卡片.png';
 import lemonDialog from '@/assets/images/柠檬水-对话.png';
 import lemonCard from '@/assets/images/柠檬水-卡片.png';
+import addCart1 from '@/assets/images/辣椒炒肉加购1.png';
+import addCart2 from '@/assets/images/辣椒炒肉加购2.png';
+import jump1Img from '@/assets/images/跳转1.png';
+import checkoutCard from '@/assets/images/结算卡片.png';
 import CartPage from './CartPage';
 import CheckoutPage from './CheckoutPage';
 
@@ -106,13 +110,14 @@ function TypewriterImage({ src, height, active, onDone, instant = false }) {
 function AiEatWhatPage({ visible, onClose }) {
   const [stage, setStage] = useState(0);
   const [route, setRoute] = useState(null);
+  // view: 'dialog' | 'addCart1' | 'addCart2' | 'jump1' | 'checkout'
+  const [view, setView] = useState('dialog');
 
-  // 多轮对话：每轮独立 step + type（'default' 用 defaultDialogs，'variant' 用 variantDialogs）
+  // 多轮对话：每轮独立 step + type
   const [rounds, setRounds] = useState([]);
   const scrollRef = useRef(null);
   const nextIdRef = useRef(0);
   const isNearBottomRef = useRef(true);
-  // 底部图片状态：'default' 显示底部对话.png，'variant' 显示底部对话1.png
   const [bottomType, setBottomType] = useState('default');
 
   // 监听滚动
@@ -139,6 +144,7 @@ function AiEatWhatPage({ visible, onClose }) {
     if (!visible) return;
     setStage(0);
     setRoute(null);
+    setView('dialog');
     setBottomType('default');
     nextIdRef.current = 0;
     setRounds([{ id: nextIdRef.current++, step: 0, type: 'default' }]);
@@ -176,11 +182,42 @@ function AiEatWhatPage({ visible, onClose }) {
 
   if (!visible) return null;
 
-  if (route === 'cart') return <CartPage onBack={() => setRoute(null)} />;
-  if (route === 'checkout') return <CheckoutPage onBack={() => setRoute(null)} />;
-
   const pageWidth = VIEW_W;
   const pageMinHeight = pageWidth * AI_RATIO;
+
+  // 流程图视图：对话2左键/右键触发的加购/跳转流程
+  if (view !== 'dialog') {
+    return (
+      <div className="fixed inset-0 z-[150] flex justify-center bg-black/40" data-ai-alt="AI吃啥弹出页">
+        <div className="absolute inset-0" onClick={() => setView('dialog')} data-ai-alt="背景遮罩" />
+        <div
+          className="relative z-10 bg-[#F4F5F7] overflow-y-auto scrollbar-hide"
+          style={{ width: pageWidth, minHeight: pageMinHeight, maxHeight: '100vh' }}
+          data-ai-alt="流程图主体"
+        >
+          <img
+            src={
+              view === 'addCart1' ? addCart1 :
+              view === 'addCart2' ? addCart2 :
+              view === 'jump1' ? jump1Img :
+              checkoutCard
+            }
+            alt={view}
+            style={{ width: VIEW_W, display: 'block' }}
+            className="cursor-pointer"
+            onClick={() => {
+              if (view === 'addCart1') setView('addCart2');
+              else if (view === 'addCart2') setView('checkout');
+              else if (view === 'jump1') setView('checkout');
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  if (route === 'cart') return <CartPage onBack={() => setRoute(null)} />;
+  if (route === 'checkout') return <CheckoutPage onBack={() => setRoute(null)} />;
 
   return (
     <div className="fixed inset-0 z-[150] flex justify-center bg-black/40" data-ai-alt="AI吃啥弹出页">
@@ -198,27 +235,40 @@ function AiEatWhatPage({ visible, onClose }) {
 
         {/* 中间可滚动对话区 - 支持上滑查看历史 */}
         <div ref={scrollRef} className="flex-1 overflow-y-auto scrollbar-hide" onScroll={handleScroll}>
-          {rounds.map((round) => {
+          {rounds.map((round, roundIdx) => {
             const roundDialogs = round.type === 'variant' ? variantDialogs : round.type === 'lemon' ? lemonDialogs : defaultDialogs;
             const isLastDialog = (i) => i === roundDialogs.length - 1;
-            const isDialog3Round = round.type === 'default' || round.type === 'variant'; // 含对话3的轮次
+            const isDialog3Round = round.type === 'default' || round.type === 'variant';
+            const isLatestRound = roundIdx === rounds.length - 1;
+            // 对话2可点击条件：最新轮 + index=1 + 对话3已激活(step>=2) + 含对话3的轮次
+            const dialog2Clickable = isLatestRound && isDialog3Round;
             return (
               <div key={round.id} className="flex flex-col">
-                {roundDialogs.map((d, i) => (
-                  <div
-                    key={`${round.id}-${i}`}
-                    className={`${i === 0 ? 'mt-[12px] mb-[6px]' : i === 1 ? 'mb-[12px]' : ''} ${isLastDialog(i) && isDialog3Round ? 'cursor-pointer' : ''}`}
-                    onClick={isLastDialog(i) && isDialog3Round ? handleDialog3Click : undefined}
-                  >
-                    <TypewriterImage
-                      src={d.src}
-                      height={d.h}
-                      instant={d.instant}
-                      active={stage >= 1 && round.step >= i}
-                      onDone={() => handleDialogDone(round.id, i, roundDialogs.length)}
-                    />
-                  </div>
-                ))}
+                {roundDialogs.map((d, i) => {
+                  const isD2 = i === 1 && dialog2Clickable && round.step >= 2;
+                  const isD3 = isLastDialog(i) && isDialog3Round;
+                  return (
+                    <div
+                      key={`${round.id}-${i}`}
+                      className={`${i === 0 ? 'mt-[12px] mb-[6px]' : i === 1 ? 'mb-[12px]' : ''} ${isD2 || isD3 ? 'cursor-pointer' : ''}`}
+                      onClick={
+                        isD3 ? handleDialog3Click :
+                        isD2 ? () => setView('addCart1') : undefined
+                      }
+                      onContextMenu={
+                        isD2 ? (e) => { e.preventDefault(); setView('checkout'); } : undefined
+                      }
+                    >
+                      <TypewriterImage
+                        src={d.src}
+                        height={d.h}
+                        instant={d.instant}
+                        active={stage >= 1 && round.step >= i}
+                        onDone={() => handleDialogDone(round.id, i, roundDialogs.length)}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             );
           })}
